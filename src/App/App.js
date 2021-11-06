@@ -1,7 +1,12 @@
 import './App.scss';
+import Board from './components/Board/Board';
 
 function App() {
-  return <h1>Holi, Mundo</h1>;
+  return (
+    <div>
+      <Board></Board>
+    </div>
+  );
 }
 
 export default App;

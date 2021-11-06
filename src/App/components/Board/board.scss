@@ -1,0 +1,19 @@
+.board {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.game {
+  width: 560px;
+  height: 560px;
+  display: flex;
+  flex-wrap: wrap;
+
+  img {
+    width: 70px;
+    height: 70px;
+    border: 1px grey solid;
+  }
+}
