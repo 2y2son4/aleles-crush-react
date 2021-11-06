@@ -7,23 +7,26 @@ const candyColors = ['blue', 'green', 'orange', 'purple', 'red', 'yellow'];
 
 const Board = () => {
   const [currentColorArray, setCurrentColorArray] = useState([]);
+  const [squareBeingDragged, setSquareBeingDragged] = useState(null);
+  const [squareBeingReplaced, setSquareBeingReplaced] = useState(null);
 
   /* ****** CHECK FOR COINCIDENCES IN COLUMNS AND ROWS ****** */
 
   const checkColumnOfFour = () => {
     // 39 is the index number of the position we want to loop to stop
-    for (let i = 0; i < 39; i++) {
+    for (let i = 0; i <= 39; i++) {
       const columnOfFour = [i, i + width, i + width * 2, i + width * 3];
       const currentColor = currentColorArray[i];
 
       if (columnOfFour.every((square) => currentColorArray[square] === currentColor)) {
         columnOfFour.forEach((square) => (currentColorArray[square] = ''));
+        return true;
       }
     }
   };
 
   const checkRowOfFour = () => {
-    for (let i = 0; i < 64; i++) {
+    for (let i = 0; i <= 64; i++) {
       const rowOfFour = [i, i + 1, i + 2, i + 4];
       const currentColor = currentColorArray[i];
 
@@ -37,19 +40,21 @@ const Board = () => {
       if (rowOfFour.every((square) => currentColorArray[square] === currentColor)) {
         // Check if every square has the same color
         rowOfFour.forEach((square) => (currentColorArray[square] = ''));
+        return true;
       }
     }
   };
 
   const checkColumnOfThree = () => {
     // 47 is the index number of the position we want to loop to stop
-    for (let i = 0; i < 47; i++) {
+    for (let i = 0; i <= 47; i++) {
       const columnOfThree = [i, i + width, i + width * 2];
       const currentColor = currentColorArray[i];
 
       // Check if every square has the same color
       if (columnOfThree.every((square) => currentColorArray[square] === currentColor)) {
         columnOfThree.forEach((square) => (currentColorArray[square] = ''));
+        return true;
       }
     }
   };
@@ -67,6 +72,7 @@ const Board = () => {
       if (rowOfThree.every((square) => currentColorArray[square] === currentColor)) {
         // Check if every square has the same color
         rowOfThree.forEach((square) => (currentColorArray[square] = ''));
+        return true;
       }
     }
   };
@@ -74,7 +80,7 @@ const Board = () => {
   /* ****** MOVE SQUARES ONCE CHECKED ****** */
 
   const moveIntoSquareBelow = () => {
-    for (let i = 0; i < width * width - width; i++) {
+    for (let i = 0; i <= 55; i++) {
       const firstRow = [0, 1, 2, 3, 4, 5, 6, 7];
       const isFirstRow = firstRow.includes(i);
 
@@ -87,6 +93,50 @@ const Board = () => {
         currentColorArray[i + width] = currentColorArray[i];
         currentColorArray[i] = '';
       }
+    }
+  };
+
+  /* ****** DRAG FUNCTIONS ****** */
+
+  const dragStart = (ev) => {
+    // It needs to pick up and store the ID of the square that is been dragged
+    setSquareBeingDragged(ev.target);
+  };
+
+  const dragDrop = (ev) => {
+    setSquareBeingReplaced(ev.target);
+  };
+
+  const dragEnd = () => {
+    const squareBeingDraggedId = parseInt(squareBeingDragged.getAttribute('data-id'));
+    const squaredBeingReplacedId = parseInt(squareBeingReplaced.getAttribute('data-id'));
+
+    currentColorArray[squareBeingDraggedId] = squareBeingReplaced.style.backgroundColor;
+    currentColorArray[squaredBeingReplacedId] = squareBeingDragged.style.backgroundColor;
+
+    // Prevent the drag for more than one square up, down, left & right
+    const validMoves = [
+      squareBeingDraggedId - 1,
+      squareBeingDraggedId - width,
+      squareBeingDraggedId + 1,
+      squareBeingDraggedId + width,
+    ];
+
+    const validMove = validMoves.includes(squaredBeingReplacedId);
+
+    const isAColumnOfFour = checkColumnOfFour();
+    const isARowOfFour = checkRowOfFour();
+    const isAColumnOfThree = checkColumnOfThree();
+    const isARowOfThree = checkRowOfThree();
+
+    // Check if the valid move creates a valid match
+    if (squaredBeingReplacedId && validMove && (isARowOfFour || isAColumnOfFour || isARowOfThree || isAColumnOfThree)) {
+      setSquareBeingDragged(null);
+      setSquareBeingReplaced(null);
+    } else {
+      currentColorArray[squaredBeingReplacedId] = squareBeingReplaced.style.backgroundColor;
+      currentColorArray[squareBeingDraggedId] = squareBeingDragged.style.backgroundColor;
+      setCurrentColorArray([...currentColorArray]);
     }
   };
 
@@ -128,7 +178,19 @@ const Board = () => {
     <div className='board'>
       <div className='game'>
         {currentColorArray.map((candyColor, i) => (
-          <img key={i} style={{ backgroundColor: candyColor }} alt={candyColor} data-id={i} />
+          <img
+            key={i}
+            style={{ backgroundColor: candyColor }}
+            alt={candyColor}
+            data-id={i}
+            draggable={true}
+            onDragStart={dragStart}
+            onDragOver={(ev) => ev.preventDefault()}
+            onDragEnter={(ev) => ev.preventDefault()}
+            onDragLeave={(ev) => ev.preventDefault()}
+            onDrop={dragDrop}
+            onDragEnd={dragEnd}
+          />
         ))}
       </div>
     </div>
