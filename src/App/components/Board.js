@@ -24,8 +24,47 @@ const Board = () => {
   const [scoreDisplay, setScoreDisplay] = useState(0);
 
   /* ****** CHECK FOR COINCIDENCES IN COLUMNS AND ROWS ****** */
+
+  const checkColumnOfFive = () => {
+    // 39 is the index number of the position we want the loop to stop
+    for (let i = 0; i <= 31; i++) {
+      const columnOfFive = [i, i + width, i + width * 2, i + width * 3, i + width * 4];
+      const currentColor = currentColorArray[i];
+      const isBlank = currentColorArray[i] === blank;
+
+      if (columnOfFive.every((square) => currentColorArray[square] === currentColor && !isBlank)) {
+        setScoreDisplay((score) => score + 5);
+        columnOfFive.forEach((square) => (currentColorArray[square] = blank));
+        return true;
+      }
+    }
+  };
+
+  const checkRowOfFive = () => {
+    for (let i = 0; i <= 64; i++) {
+      const rowOfFive = [i, i + 1, i + 2, i + 3, i + 4];
+      const currentColor = currentColorArray[i];
+      const isBlank = currentColorArray[i] === blank;
+
+      // Stop checking in not suitable squares
+      const notValidSquares = [
+        4, 5, 6, 7, 12, 13, 14, 15, 20, 21, 22, 23, 28, 29, 30, 31, 36, 37, 38, 39, 44, 45, 46, 47, 52, 53, 54, 55, 61,
+        62, 63, 64,
+      ];
+
+      if (notValidSquares.includes(i)) continue;
+
+      if (rowOfFive.every((square) => currentColorArray[square] === currentColor && !isBlank)) {
+        setScoreDisplay((score) => score + 5);
+        // Check if every square has the same color
+        rowOfFive.forEach((square) => (currentColorArray[square] = blank));
+        return true;
+      }
+    }
+  };
+
   const checkColumnOfFour = () => {
-    // 39 is the index number of the position we want to loop to stop
+    // 39 is the index number of the position we want the loop to stop
     for (let i = 0; i <= 39; i++) {
       const columnOfFour = [i, i + width, i + width * 2, i + width * 3];
       const currentColor = currentColorArray[i];
@@ -121,6 +160,7 @@ const Board = () => {
   const dragStart = (ev) => {
     // It needs to pick up and store the ID of the square that is been dragged
     setSquareBeingDragged(ev.target);
+    console.log(ev.target);
   };
 
   const dragDrop = (ev) => {
@@ -144,13 +184,19 @@ const Board = () => {
 
     const validMove = validMoves.includes(squaredBeingReplacedId);
 
+    const isAColumnOfFive = checkColumnOfFive();
+    const isARowOfFive = checkRowOfFive();
     const isAColumnOfFour = checkColumnOfFour();
     const isARowOfFour = checkRowOfFour();
     const isAColumnOfThree = checkColumnOfThree();
     const isARowOfThree = checkRowOfThree();
 
     // Check if the valid move creates a valid match
-    if (squaredBeingReplacedId && validMove && (isARowOfFour || isAColumnOfFour || isARowOfThree || isAColumnOfThree)) {
+    if (
+      squaredBeingReplacedId &&
+      validMove &&
+      (isAColumnOfFive || isARowOfFive || isARowOfFour || isAColumnOfFour || isARowOfThree || isAColumnOfThree)
+    ) {
       setSquareBeingDragged(null);
       setSquareBeingReplaced(null);
     } else {
@@ -184,6 +230,8 @@ const Board = () => {
     // Set when the game is going to check if there are any coincidences
     const timer = setInterval(() => {
       // Check columns of 4 before columns of 3
+      checkColumnOfFive();
+      checkRowOfFive();
       checkColumnOfFour();
       checkRowOfFour();
       checkColumnOfThree();
@@ -193,7 +241,16 @@ const Board = () => {
     }, 100);
 
     return () => clearInterval(timer);
-  }, [checkColumnOfFour, checkRowOfFour, checkColumnOfThree, checkRowOfThree, moveIntoSquareBelow, currentColorArray]);
+  }, [
+    checkColumnOfFive,
+    checkRowOfFive,
+    checkColumnOfFour,
+    checkRowOfFour,
+    checkColumnOfThree,
+    checkRowOfThree,
+    moveIntoSquareBelow,
+    currentColorArray,
+  ]);
 
   return (
     <div className='board'>
