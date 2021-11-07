@@ -24,7 +24,6 @@ const Board = () => {
   const [scoreDisplay, setScoreDisplay] = useState(0);
 
   /* ****** CHECK FOR COINCIDENCES IN COLUMNS AND ROWS ****** */
-
   const checkColumnOfFive = () => {
     // 39 is the index number of the position we want the loop to stop
     for (let i = 0; i <= 31; i++) {
