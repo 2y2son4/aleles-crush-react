@@ -1,6 +1,6 @@
 .score-board {
   background-color: #ff97cb44;
-  border: 1px #ff97cb solid;
+  border: 1px hotpink solid;
   color: rgb(28, 39, 136);
   display: flex;
   justify-content: space-between;
@@ -9,4 +9,20 @@
   padding: 12px;
   text-align: center;
   width: 560px;
+
+  button {
+    background-color: transparent;
+    border: 1px hotpink solid;
+    border-radius: 16px;
+    color: white;
+    cursor: pointer;
+    font-weight: 700;
+    height: 36px;
+    width: 80px;
+    transition: all 0.7s linear;
+
+    &:hover {
+      background-color: hotpink;
+    }
+  }
 }

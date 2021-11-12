@@ -22,6 +22,22 @@ const Board = () => {
   const [squareBeingDragged, setSquareBeingDragged] = useState(null);
   const [squareBeingReplaced, setSquareBeingReplaced] = useState(null);
   const [scoreDisplay, setScoreDisplay] = useState(0);
+  const [note, setNote] = useState('');
+
+  /* ****** BOARD SET UP ****** */
+  const createBoard = () => {
+    const randomColorArray = [];
+
+    for (let i = 0; i < width * width; i++) {
+      // Get a random color
+      const randomColor = candyColors[Math.floor(Math.random() * candyColors.length)];
+
+      // Add each color to the empty array
+      randomColorArray.push(randomColor);
+    }
+
+    setCurrentColorArray(randomColorArray);
+  };
 
   /* ****** CHECK FOR COINCIDENCES IN COLUMNS AND ROWS ****** */
   const checkColumnOfFive = () => {
@@ -205,33 +221,20 @@ const Board = () => {
     }
   };
 
-  /* ****** BOARD SET UP ****** */
-  const createBoard = () => {
-    const randomColorArray = [];
-
-    for (let i = 0; i < width * width; i++) {
-      // Get a random color
-      const randomColor = candyColors[Math.floor(Math.random() * candyColors.length)];
-
-      // Add each color to the empty array
-      randomColorArray.push(randomColor);
-    }
-
-    setCurrentColorArray(randomColorArray);
-  };
-
   /* ****** SET COUNTER TO 0 ****** */
   const winGame = () => {
     if (scoreDisplay >= 500) {
       setScoreDisplay(0);
       createBoard();
+      setNote('');
     }
   };
 
   /* ****** RESET BTN ****** */
 
   const resetGame = () => {
-    console.log('man clikaooooooo');
+    createBoard();
+    setScoreDisplay(0);
   };
 
   // To prevent this function to re-render indefinitely, a useEffect is needed so it only runs once
@@ -270,6 +273,7 @@ const Board = () => {
   return (
     <>
       <div className='board'>
+        <div className='note'>{note}</div>
         <ScoreBoard score={scoreDisplay} resetGame={resetGame} />
         <div className='game'>
           {currentColorArray.map((candyColor, i) => (

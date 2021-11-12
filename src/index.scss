@@ -5,6 +5,5 @@
 }
 
 body {
-  background-color: hotpink;
-  background-image: url('./App/assets/bg.jpg');
+  background: hotpink url('./App/assets/bg.jpg') no-repeat fixed left;
 }
