@@ -1,0 +1,2 @@
+.board{height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center}.game{width:560px;height:560px;display:flex;flex-wrap:wrap;background-color:#ff97cb}.game img{width:70px;height:70px;border:1px solid grey}.score-title{margin:12px 0;color:#ff69b4}*{font-family:Arial,Helvetica,sans-serif;box-sizing:border-box;margin:0}body{background-color:#ff69b4;background-image:url(../../static/media/bg.52038798.jpg)}
+/*# sourceMappingURL=main.dcc817ca.chunk.css.map */
