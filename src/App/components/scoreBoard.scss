@@ -1,7 +1,10 @@
-.score-title {
+.score-board {
   background-color: #ff97cb44;
   border: 1px #ff97cb solid;
   color: rgb(28, 39, 136);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-top: 12px;
   padding: 12px;
   text-align: center;

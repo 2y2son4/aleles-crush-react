@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import './board.scss';
 
 // Components
@@ -220,6 +220,20 @@ const Board = () => {
     setCurrentColorArray(randomColorArray);
   };
 
+  /* ****** SET COUNTER TO 0 ****** */
+  const winGame = () => {
+    if (scoreDisplay >= 500) {
+      setScoreDisplay(0);
+      createBoard();
+    }
+  };
+
+  /* ****** RESET BTN ****** */
+
+  const resetGame = () => {
+    console.log('man clikaooooooo');
+  };
+
   // To prevent this function to re-render indefinitely, a useEffect is needed so it only runs once
   useEffect(() => {
     createBoard();
@@ -236,6 +250,7 @@ const Board = () => {
       checkColumnOfThree();
       checkRowOfThree();
       moveIntoSquareBelow();
+      winGame();
       setCurrentColorArray([...currentColorArray]);
     }, 100);
 
@@ -248,30 +263,33 @@ const Board = () => {
     checkColumnOfThree,
     checkRowOfThree,
     moveIntoSquareBelow,
+    winGame,
     currentColorArray,
   ]);
 
   return (
-    <div className='board'>
-      <ScoreBoard score={scoreDisplay} />
-      <div className='game'>
-        {currentColorArray.map((candyColor, i) => (
-          <img
-            key={i}
-            src={candyColor}
-            alt={candyColor}
-            data-id={i}
-            draggable={true}
-            onDragStart={dragStart}
-            onDragOver={(ev) => ev.preventDefault()}
-            onDragEnter={(ev) => ev.preventDefault()}
-            onDragLeave={(ev) => ev.preventDefault()}
-            onDrop={dragDrop}
-            onDragEnd={dragEnd}
-          />
-        ))}
+    <>
+      <div className='board'>
+        <ScoreBoard score={scoreDisplay} resetGame={resetGame} />
+        <div className='game'>
+          {currentColorArray.map((candyColor, i) => (
+            <img
+              key={i}
+              src={candyColor}
+              alt={candyColor}
+              data-id={i}
+              draggable={true}
+              onDragStart={dragStart}
+              onDragOver={(ev) => ev.preventDefault()}
+              onDragEnter={(ev) => ev.preventDefault()}
+              onDragLeave={(ev) => ev.preventDefault()}
+              onDrop={dragDrop}
+              onDragEnd={dragEnd}
+            />
+          ))}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
