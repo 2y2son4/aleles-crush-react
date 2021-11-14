@@ -1,34 +1,40 @@
-import { useState, useEffect } from 'react';
+import React from 'react';
+import { CountdownCircleTimer } from 'react-countdown-circle-timer';
 
-const Timer = ({ hoursMinSecs }) => {
-  const { hours = 0, minutes = 0, seconds = 60 } = hoursMinSecs;
-  const [[hrs, mins, secs], setTime] = useState([hours, minutes, seconds]);
+import './timer.scss';
 
-  const tick = () => {
-    if (hrs === 0 && mins === 0 && secs === 0) reset();
-    else if (mins === 0 && secs === 0) {
-      setTime([hrs - 1, 59, 59]);
-    } else if (secs === 0) {
-      setTime([hrs, mins - 1, 59]);
-    } else {
-      setTime([hrs, mins, secs - 1]);
-    }
-  };
+const timerProps = {
+  isPlaying: true,
+  size: 70,
+  strokeWidth: 6,
+};
 
-  const reset = () => setTime([parseInt(hours), parseInt(minutes), parseInt(seconds)]);
-
-  useEffect(() => {
-    const timerId = setInterval(() => tick(), 1000);
-    return () => clearInterval(timerId);
-  });
+const renderTime = ({ remainingTime }) => {
+  if (remainingTime === 0) {
+    return <div className='timer'>Too lale...</div>;
+  }
 
   return (
-    <div>
-      <p>{`${hrs.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs
-        .toString()
-        .padStart(2, '0')}`}</p>
+    <div className='timer'>
+      <div className='timer-value'>{remainingTime}</div>
     </div>
   );
 };
+
+function Timer() {
+  return (
+    <div className='timer-wrapper'>
+      <CountdownCircleTimer
+        {...timerProps}
+        isPlaying
+        duration={90}
+        colors={[['#ff69b4', 0.33], ['#9c436f', 0.33], ['#461e32']]}
+        onComplete={() => [true, 1000]}
+      >
+        {renderTime}
+      </CountdownCircleTimer>
+    </div>
+  );
+}
 
 export default Timer;

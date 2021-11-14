@@ -1,7 +1,7 @@
 .score-board {
-  background-color: #ff97cb44;
-  border: 1px hotpink solid;
-  color: rgb(28, 39, 136);
+  background-color: #2774bd;
+  border: 1px #ff69b4 solid;
+  color: #ff69b4;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -12,9 +12,9 @@
 
   button {
     background-color: transparent;
-    border: 1px hotpink solid;
+    border: 1px #ff69b4 solid;
     border-radius: 16px;
-    color: white;
+    color: #ffffff;
     cursor: pointer;
     font-weight: 700;
     height: 36px;
@@ -22,7 +22,7 @@
     transition: all 0.7s linear;
 
     &:hover {
-      background-color: hotpink;
+      background-color: #ff69b4;
     }
   }
 }
