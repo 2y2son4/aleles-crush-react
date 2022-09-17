@@ -1,12 +1,12 @@
 import React from 'react';
 import './scoreBoard.scss';
-import Timer from './Timer';
+// import Timer from './Timer';
 
 const ScoreBoard = ({ score, resetGame }) => {
   return (
     <div className='score-board'>
       <h2>Score: {score}</h2>
-      <Timer />
+      {/* <Timer /> */}
       <button className='score-reset' onClick={resetGame}>
         Reset
       </button>

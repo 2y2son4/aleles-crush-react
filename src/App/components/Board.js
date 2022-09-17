@@ -175,7 +175,6 @@ const Board = () => {
   const dragStart = (ev) => {
     // It needs to pick up and store the ID of the square that is been dragged
     setSquareBeingDragged(ev.target);
-    console.log(ev.target);
   };
 
   const dragDrop = (ev) => {
@@ -186,8 +185,8 @@ const Board = () => {
     const squareBeingDraggedId = parseInt(squareBeingDragged.getAttribute('data-id'));
     const squaredBeingReplacedId = parseInt(squareBeingReplaced.getAttribute('data-id'));
 
-    currentColorArray[squaredBeingReplacedId] = squareBeingDragged.getAttribute('src');
     currentColorArray[squareBeingDraggedId] = squareBeingReplaced.getAttribute('src');
+    currentColorArray[squaredBeingReplacedId] = squareBeingDragged.getAttribute('src');
 
     // Prevent the drag for more than one square up, down, left & right
     const validMoves = [
@@ -223,7 +222,7 @@ const Board = () => {
 
   /* ****** SET COUNTER TO 0 ****** */
   const winGame = () => {
-    if (scoreDisplay >= 500) {
+    if (scoreDisplay >= 100) {
       setScoreDisplay(0);
       createBoard();
       setNote('');

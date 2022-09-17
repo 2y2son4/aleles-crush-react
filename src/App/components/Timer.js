@@ -11,7 +11,7 @@ const timerProps = {
 
 const renderTime = ({ remainingTime }) => {
   if (remainingTime === 0) {
-    return <div className='timer'>Too lale...</div>;
+    return <div className='timer-text'>Too lale...</div>;
   }
 
   return (
@@ -28,7 +28,7 @@ function Timer() {
         {...timerProps}
         isPlaying
         duration={90}
-        colors={[['#ff69b4', 0.33], ['#9c436f', 0.33], ['#461e32']]}
+        colors={[['#008000', 0.25], ['#c4c400', 0.25], ['#ffa500', 0.25], ['#a70707']]}
         onComplete={() => [true, 1000]}
       >
         {renderTime}
